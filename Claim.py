@@ -1,6 +1,6 @@
 import requests as client
 from sys import platform
-import os
+import os, time
 Clear = None
 if platform == "linux" or platform == "linux2":
     Clear = lambda: os.system("clear")
@@ -44,8 +44,9 @@ def main():
          return
        except:
          print('Tried to claim but failure')
- else:
-   print('Invite Unavailable, Didnt try to claim.')
+     else:
+       print('Invite Unavailable, Didnt try to claim.')
+     time.sleep(delay)
    
 main()
 input('Press Entre To Exit: ')
