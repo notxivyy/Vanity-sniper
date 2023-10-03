@@ -49,7 +49,7 @@ def main():
  headers = header(token);r=requests.get(f"https://discord.com/api/v10/guilds/{guildid}", headers=headers)
  if r.status_code==200:
    print(Fore.GREEN + f"[+] Starting Claim For .gg/{vainty} on server {guildid}")
-   while 1==1:
+   while True:
      invcheck = requests.get(f'https://discord.com/api/v10/invites/{vainty}', headers=headers)
      if invcheck.status_code != 200:
        rr = requests.patch('https://discord.com/api/v10/guilds/'+guildid+'/vanity-url',headers=headers, json={'code': vainty})
