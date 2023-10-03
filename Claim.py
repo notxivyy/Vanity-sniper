@@ -1,13 +1,14 @@
 import requests as client
 from sys import platform
-import os, time
+import os, time, colorama
+from colorama import Fore
 Clear = None
 if platform == "linux" or platform == "linux2":
     Clear = lambda: os.system("clear")
 elif platform == "darwin":
     Clear = lambda: os.system("clear")
 elif platform == "win32":
-    Clear = lambda: os.system("cls")
+    Clear = lambda: os.system("cls"); os.system("title Vanity Sniper")
 requests = client.Session()
 def header(token):
   return  {
@@ -28,25 +29,43 @@ def header(token):
 
 def main():
  eval("Clear()")
- guildid=input('-> Server Id: ')
- vainty = input('-> Vanity: ')
- toknan = input('-> Token: ')
- delay = float(input('-> Delay: '))
- headier = header(toknan);r=requests.get(f"https://discord.com/api/v10/guilds/{guildid}", headers=headier)
+ print(f"""{Fore.BLUE}
+  ██████  ███▄    █  ██▓ ██▓███  ▓█████  ██▀███  
+▒██    ▒  ██ ▀█   █ ▓██▒▓██░  ██▒▓█   ▀ ▓██ ▒ ██▒
+░ ▓██▄   ▓██  ▀█ ██▒▒██▒▓██░ ██▓▒▒███   ▓██ ░▄█ ▒
+  ▒   ██▒▓██▒  ▐▌██▒░██░▒██▄█▓▒ ▒▒▓█  ▄ ▒██▀▀█▄  
+▒██████▒▒▒██░   ▓██░░██░▒██▒ ░  ░░▒████▒░██▓ ▒██▒
+▒ ▒▓▒ ▒ ░░ ▒░   ▒ ▒ ░▓  ▒▓▒░ ░  ░░░ ▒░ ░░ ▒▓ ░▒▓░
+░ ░▒  ░ ░░ ░░   ░ ▒░ ▒ ░░▒ ░      ░ ░  ░  ░▒ ░ ▒░
+░  ░  ░     ░   ░ ░  ▒ ░░░          ░     ░░   ░ 
+      ░           ░  ░              ░  ░   ░     
+    https://github.com/notxivyy/vanity-sniper
+                Made by xivy                                
+""")
+ guildid=input(f'{Fore.LIGHTBLUE_EX}[!] Server Id » ')
+ vainty = input('[!] Vanity » ').split('/')[-1]
+ token = input('[!] Token » ')
+ delay = float(input('[!] Delay » '))
+ headers = header(token);r=requests.get(f"https://discord.com/api/v10/guilds/{guildid}", headers=headers)
  if r.status_code==200:
+   print(Fore.GREEN + f"[+] Starting Claim For .gg/{vainty} on server {guildid}")
    while 1==1:
-     pluh = requests.get(f'https://discord.com/api/v10/invites/{vainty}', headers=headier)
-     if pluh.status_code != 200:
-       rir = requests.patch('https://discord.com/api/v10/guilds/'+guildid+'/vanity-url',headers=headier, json={'code': vainty})
+     invcheck = requests.get(f'https://discord.com/api/v10/invites/{vainty}', headers=headers)
+     if invcheck.status_code != 200:
+       rr = requests.patch('https://discord.com/api/v10/guilds/'+guildid+'/vanity-url',headers=headers, json={'code': vainty})
        try:
-         rir.raise_for_status()
-         print('Successfully Was Claimed.')
+         rr.raise_for_status()
+         print(f'{Fore.GREEN}[+] Successfully Was Claimed.')
          return
        except:
-         print('Tried to claim but failure')
+         print(f'{Fore.LIGHTRED_EX}[-] Tried to claim but failure')
      else:
-       print('Invite Unavailable, Didnt try to claim.')
+       print(f'{Fore.LIGHTRED_EX}[-] Invite Unavailable (.gg/{vainty})')
      time.sleep(delay)
+ else:
+   if r.status_code == 401: print(Fore.RED+"[-] Invalid Token")
+   else: print(Fore.RED+"[-] Invalid Guild ID")
    
 main()
-input('Press Entre To Exit: ')
+input('Press Enter To Exit: ')
+exit()
